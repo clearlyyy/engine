@@ -1,0 +1,59 @@
+newmtl _default_
+Kd 0.502 0.502 0.502 
+Ks 0.067 0.067 0.067 
+Ns 30
+
+newmtl material_1_51
+Kd 0.502 0.502 0.502 
+Ks 0.251 0.251 0.251 
+Ns 20
+map_Kd textures/jp_holder07_c.jpg
+map_Ks textures/jp_holder07_n_s.jpg
+
+newmtl material_3_52
+Kd 0.502 0.502 0.502 
+Ks 0.251 0.251 0.251 
+Ns 20
+map_Kd textures/ki_21_1ko_gray_2_a.jpg
+map_Ks textures/ki_21_1ko_gray_n_s.jpg
+
+newmtl material_6_52
+Kd 0.502 0.502 0.502 
+Ks 0.251 0.251 0.251 
+Ns 20
+map_Kd textures/ki_21_1ko_gray_inner_a.jpg
+map_Ks textures/ki_21_1ko_gray_inner_n_s.jpg
+
+newmtl material_4_52
+Kd 0.000 0.000 0.000 
+Ks 1.000 1.000 1.000 
+Ns 255
+
+newmtl material_5_52
+Kd 0.502 0.502 0.502 
+Ks 0.251 0.251 0.251 
+Ns 20
+map_Kd textures/barrage_balloon_rope.jpg
+map_d textures/barrage_balloon_rope_a.png
+
+newmtl material_10_56
+Kd 0.502 0.502 0.502 
+Ks 0.251 0.251 0.251 
+Ns 20
+map_Kd textures/mgun_te_1_a.jpg
+map_Ks textures/mgun_te_1_n_s.jpg
+
+newmtl material_13_56
+Kd 0.502 0.502 0.502 
+Ks 0.251 0.251 0.251 
+Ns 20
+map_Kd textures/mg_ff_flex_alfa_a.jpg
+map_d textures/mg_ff_flex_alfa_a_a.png
+
+newmtl material_12_56
+Kd 0.502 0.502 0.502 
+Ks 0.251 0.251 0.251 
+Ns 20
+map_Kd textures/mgun_type_89_a.jpg
+map_Ks textures/mgun_type_89_n_s.jpg
+

@@ -14,8 +14,13 @@ public:
     unsigned int ID;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
+
+    Shader() {}
+
     Shader(const char* vertexPath, const char* fragmentPath)
     {
+        std::cout << "INIT_SHADER" << std::endl;
+        
         // 1. retrieve the vertex/fragment source code from filePath
         std::string vertexCode;
         std::string fragmentCode;

@@ -39,7 +39,7 @@ public:
 
     Cube(float x, float y, float z, const char* diffuse, const char* specular) {
         //shader initilization
-
+        //
         cubePosition.x = x;
         cubePosition.y = y;
         cubePosition.z = z;

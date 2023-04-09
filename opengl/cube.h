@@ -11,7 +11,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-//cube class
+//cube class 2
 
 class Cube {
 public:

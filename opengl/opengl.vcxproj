@@ -160,6 +160,7 @@
     <ClInclude Include="..\include\imgui\imstb_textedit.h" />
     <ClInclude Include="..\include\imgui\imstb_truetype.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="chunk.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="lights.h" />
     <ClInclude Include="mesh.h" />

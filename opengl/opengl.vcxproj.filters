@@ -101,6 +101,9 @@
     <ClInclude Include="lights.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="chunk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\imgui\imgui_impl_opengl3_loader.h.gch">

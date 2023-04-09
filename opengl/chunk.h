@@ -35,7 +35,7 @@ public:
                 }
             }
         }
-
+        //set fake world to real world;
         for (int i = 0; i < chunkSizeX; i++) {
             for (int j = 0; j < chunkSizeY; j++) {
                 for (int x = 0; x < chunkSizeZ; x++) {

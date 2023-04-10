@@ -18,84 +18,147 @@ public:
 
     Cube() {}
 
-    Cube(glm::vec3 position, const char* diffuse, const char* specular) {
+    Cube(const char* Diffuse, const char* Specular) {
         //shader initilization
 
-        cubePosition = position;
-        std::cout << vertices.capacity() << std::endl;
-        std::cout << vertices.max_size() << std::endl;
+        diffuse = Diffuse;
+        specular = Specular;
 
-       float curVert1  = -0.6f;
-       float curVert2 = -1.6f;
-       
-       std::cout << "Starting Chunk Mesh Generation" << std::endl;
+        //cubePosition = position;
+        //std::cout << vertices.capacity() << std::endl;
+        //std::cout << vertices.max_size() << std::endl;
 
-       for (float i = 0; i > -333; i--) {
-           for (float j = 0; j > -333; j--) {
-               vertices.insert(vertices.end(),
-                   {
-                       i-1.0f, j  -1.0f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-                       i,      j  -1.0f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-                       i,      j       , -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-                       i,      j       , -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-                       i-1.0f, j       , -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-                       i-1.0f, j  -1.0f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+        //float curVert1  = -0.6f;
+        //float curVert2 = -1.6f;
+        //Chunk mesh generation.
+        //for (float i = 0; i > -32; i--) {
+        //    for (float j = 0; j > -128; j--) {
+        //        for (float k = 0; k > -32; k--) {
+        //            vertices.insert(vertices.end(),
+        //                {
+        //                    i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+        //                    i,      j - 1.0f,   k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+        //                    i,      j       ,   k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+        //                    i,      j       ,   k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+        //                    i - 1.0f, j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+        //                    i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+        //
+        //                    i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+        //                    i,      j - 1.0f,   k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+        //                    i,      j       ,   k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+        //                    i,      j       ,   k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+        //                    i - 1.0f, j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+        //                    i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+        //
+        //                    i - 1.0f, j - 1.0f,  k,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+        //                    i,        j - 1.0f,  k,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+        //                    i,        j       ,  k,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+        //                    i,        j       ,  k,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+        //                    i - 1.0f, j       ,  k,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+        //                    i - 1.0f, j - 1.0f,  k,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+        //
+        //                    i - 1.0f, j,         k, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+        //                    i - 1.0f, j,         k - 1.0f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+        //                    i - 1.0f, j - 1.0f,  k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+        //                    i - 1.0f, j - 1.0f,  k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+        //                    i - 1.0f, j - 1.0f,  k, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+        //                    i - 1.0f, j,         k, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+        //
+        //                    i,      j,           k,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+        //                    i,      j,           k - 1.0f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+        //                    i,      j - 1.0f,    k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+        //                    i,      j - 1.0f,    k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+        //                    i,      j - 1.0f,    k,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+        //                    i,      j,           k,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+        //
+        //                    i - 1.0f, j - 1.0f,  k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+        //                    i,        j - 1.0f,  k - 1.0f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+        //                    i,        j - 1.0f,  k,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+        //                    i,        j - 1.0f,  k,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+        //                    i - 1.0f, j - 1.0f,  k,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+        //                    i - 1.0f, j - 1.0f,  k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+        //
+        //                    i - 1.0f, j,         k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+        //                    i,        j,         k - 1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+        //                    i,        j,         k,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+        //                    i,        j,         k,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+        //                    i - 1.0f, j,         k,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+        //                    i - 1.0f, j,         k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+        //
+        //                });
+                    //curVert1 -= 1.1f;
+                    //curVert2 -= 1.1f;
+        //        }
+        //    }
+        //}
+        //std::cout << "Finished Chunk Mesh Generation" << std::endl;
+        
+	}
 
-                       i-1.0f, j  -1.0f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-                       i,      j  -1.0f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-                       i,      j       , -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-                       i,      j       , -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-                       i-1.0f, j       , -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-                       i-1.0f, j  -1.0f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+    //all the vertices for a cube, and offsets;
+    std::vector<float> getCube(float i, float j, float k) { 
+        //std::cout << "getting cube" << std::endl;
+        std::vector<float> verts;
 
-                       i-1.0f, j  -1.0f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-                       i,      j  -1.0f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-                       i,      j       ,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-                       i,      j       ,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-                       i-1.0f, j       ,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-                       i-1.0f, j  -1.0f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+        verts.insert(verts.end(), {
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+            i,        j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+            i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+            i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+            i - 1.0f, j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 
-                       i-1.0f, j,         0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-                       i-1.0f, j,        -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-                       i-1.0f, j - 1.0f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-                       i-1.0f, j - 1.0f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-                       i-1.0f, j - 1.0f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-                       i-1.0f, j,         0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+            i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+            i,        j - 1.0f, k,         0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+            i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+            i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+            i - 1.0f, j       , k,         0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+            i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
 
-                       i,      j,         0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-                       i,      j,        -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-                       i,      j - 1.0f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-                       i,      j - 1.0f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-                       i,      j - 1.0f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-                       i,      j,         0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+            i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+            i - 1.0f, j,        k - 1.0f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+            i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+            i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+            i - 1.0f, j - 1.0f, k,        -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+            i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-                       i-1.0f, j - 1.0f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-                       i,      j - 1.0f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-                       i,      j - 1.0f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-                       i,      j - 1.0f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-                       i-1.0f, j - 1.0f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-                       i-1.0f, j - 1.0f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+            i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+            i,        j,        k - 1.0f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+            i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+            i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+            i,        j - 1.0f, k,         1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+            i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-                       i-1.0f, j, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-                       i,      j, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-                       i,      j,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-                       i,      j,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-                       i-1.0f, j,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-                       i-1.0f, j, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+            i,        j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+            i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+            i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+            i - 1.0f, j - 1.0f, k,         0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 
-                   });
-               //curVert1 -= 1.1f;
-               //curVert2 -= 1.1f;
-           }
-       }
-       std::cout << "Finished Chunk Mesh Generation" << std::endl;
+            i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+            i,        j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+            i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+            i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+            i - 1.0f, j,        k,         0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+            i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+            });
 
-       //for (int i = 0; i < vertices.size(); i++) {
-       //    std::cout << vertices[i] << " ";
-       //    if (i == 8 || i == 16 || i == 24 || i == 32 || i == 40 || i == 48 || i == 56 || i == 64)
-       //        std::cout << std::endl;
-       //    
-       //}
+        return verts;
+    }
+
+
+    void initCube() {
+
+        glDeleteVertexArrays(1, &cubeVAO);
+        glDeleteBuffers(1, &VBO);
+
+        //for (int i = 0; i < vertices.size(); i++) {
+        //    std::cout << vertices[i] << " ";
+        //    if (i == 8 || i == 16 || i == 24 || i == 32 || i == 40 || i == 48 || i == 56 || i == 64)
+        //        std::cout << std::endl;
+        //    
+        //}
 
         InitShader();
 
@@ -120,48 +183,13 @@ public:
 
         diffuseMapC = loadTexture(diffuse);
         specularMapC = loadTexture(specular);
-	}
 
-    Cube(float x, float y, float z, const char* diffuse, const char* specular) {
-        //shader initilization
-        //
-        cubePosition.x = x;
-        cubePosition.y = y;
-        cubePosition.z = z;
-        //
-        //float curVert = -1.5f;
-        //float curVert2 = -1.0f;
-        //
-        //
-        //    vertices.insert(vertices.end(),
-        //        {
-        //            curVert2, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-        //            curVert,  -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-        //            curVert,   0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-        //            curVert,   0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-        //            curVert2,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-        //            curVert2, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-        //        });
-        
-
-        InitShader();
-
-        glGenVertexArrays(1, &cubeVAO);
-        glGenBuffers(1, &VBO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices.front(), GL_STATIC_DRAW);
-
-        glBindVertexArray(cubeVAO);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-        glEnableVertexAttribArray(2);
-
-        diffuseMapC = loadTexture(diffuse);
-        specularMapC = loadTexture(specular);
+    }
+    const char* getDiffuse() {
+        return diffuse;
+    }
+    const char* getSpecular() {
+        return specular;
     }
 
     void Draw(bool updateUniforms = true) {
@@ -304,50 +332,52 @@ private:
         return textureID;
     }
 
+    const char* diffuse;
+    const char* specular;
     
    
     std::vector<float> vertices = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+       // -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+       //  0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
+       //  0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+       //  0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+       // -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+       // -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+       //
+       // -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+       //  0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+       //  0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+       //  0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+       // -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+       // -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+       //
+       // -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+       // -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+       // -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+       // -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+       // -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+       // -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+       //
+       //  0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+       //  0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+       //  0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+       //  0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+       //  0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+       //  0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+       //
+       // -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+       //  0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+       //  0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+       //  0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+       // -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+       // -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+       //
+       // -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+       //  0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+       //  0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+       //  0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+       // -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+       // -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };
     float f[288] = {
         -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,

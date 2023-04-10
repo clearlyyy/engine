@@ -12,7 +12,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "camera.h"
 
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 95.0f, 3.0f));
 
 glm::mat4 projection;
 glm::mat4 view;

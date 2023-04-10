@@ -40,6 +40,8 @@ bool firstMouse = true;
 
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
+Chunk chunk(glm::vec3(0.0f, 0.0f, 0.0f));
+
 float origSpeed;
 float boostSpeed;
 
@@ -129,7 +131,7 @@ int main()
 
     camera.MovementSpeed = 4.0f;
     origSpeed = camera.MovementSpeed;
-    boostSpeed = camera.MovementSpeed += 8.0f;
+    boostSpeed = camera.MovementSpeed += 16.0f;
 
     camera.Zoom = 90.0f;
     camera.Pitch = 45.0f / 2;
@@ -152,16 +154,26 @@ int main()
     glm::vec3 cubePos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 cubeRot = glm::vec3(0.0f, 0.0f, 0.0f);
 
+    glm::vec3 chunkSize = glm::vec3(32.0f, 128.0f, 32.0f);
+
     bool wireframe = false;
 
     //Cube tCube(cubePos, "textures/dirt.jpg", "textures/dirt.jpg");
 
-    Chunk chunk(glm::vec3(0.0f, 0.0f, 0.0f));
+    chunk = Chunk(glm::vec3(0.0f, 0.0f, 0.0f));
     
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
+
+    glm::vec3 chunkSize2 = chunk.getChunkSize();
+
+    int selectedBlock[4] = {0,0,0,0};
+
     while (!glfwWindowShouldClose(window))
     {
+
+        glm::vec3 tempChunkSize = chunkSize;
+
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -178,11 +190,16 @@ int main()
         else
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-
-        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        view = camera.GetViewMatrix();
         
-        chunk.DrawChunk();
+        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.01f, 1000.0f);
+        view = camera.GetViewMatrix();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                chunk.DrawChunk(glm::vec3((float)i*16, 0.0f, (float)j*16));
+            }
+        }
+
+        
   
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
@@ -210,6 +227,21 @@ int main()
         ImGui::SliderFloat3("Backpack Rotation", &backpackRot.x, -90.0f, 90.0f);
 
         ImGui::SliderFloat3("Cube Position", &cubePos.x, -3.0f, 3.0f);
+        
+        ImGui::SliderFloat3("Chunk Size", &chunkSize.x, 1.0f, chunkSize2.x);
+        ImGui::InputInt4("addBlock", selectedBlock);
+        if (ImGui::Button("Add")) {
+            chunk.addBlock(selectedBlock[0], selectedBlock[1], selectedBlock[2], selectedBlock[3]);
+            chunk.genMesh();
+            chunk.initChunk2();
+        }
+
+
+        if (tempChunkSize != chunkSize)
+        {
+            chunk.setSize(chunkSize);
+            chunk.updateSize();
+        }
 
         ImGui::End();
 
@@ -255,6 +287,13 @@ void processInput(GLFWwindow* window)
             }
         }
     }
+    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+        if (seconds > 1.5) {
+            chunk.genMesh();
+            chunk.initChunk2();
+            seconds = 1.0;
+        }
+    }
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -269,6 +308,8 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(DOWN, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         camera.MovementSpeed = boostSpeed;
+    //if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+    //    chunk.initChunk2();
     else
         camera.MovementSpeed = origSpeed;
 

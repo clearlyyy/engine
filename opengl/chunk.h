@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "cube.h"
+#include "PerlinNoise.hpp"
 
 
 
@@ -34,24 +35,50 @@ public:
                 for (int z = 0; z < chunkSizeZ; z++)
                     world[x][y][z] = 0;
 
+        const siv::PerlinNoise::seed_type seed = 5432532u;
+
+        const siv::PerlinNoise perlin{ seed };
+
+        //for (int x = 0; x < chunkSizeX; x++)
+        //    for (int y = 0; y < chunkSizeY-40; y++)
+        //        for (int z = 0; z < chunkSizeZ; z++) {
+        //            world[x][y][z] = 1;
+        //            //std::cout << world[x][y][z] << '\t';
+        //        }
+
         for (int x = 0; x < chunkSizeX; x++)
-            for (int y = 0; y < chunkSizeY-40; y++)
-                for (int z = 0; z < chunkSizeZ; z++)
-                    world[x][y][z] = 1;
+            for (int y = 0; y < chunkSizeY - 40; y++)
+                for (int z = 0; z < chunkSizeZ; z++) {
+                    int rNoise;
+                    const double noise = perlin.octave2D((x * 0.01), (y * 0.01), 4);
+                    rNoise = (int)(noise * 70);
+                    //std::cout << rNoise << std::endl;
+                    if (rNoise < 48 && rNoise > 1)
+                        world[x][y][rNoise] = 1;
+                    //std::cout << world[x][y][z] << '\t';
+                }
+
+        
 
         //world[1][90][1] = 1;
 
         for (int x = 0; x < chunkSizeX; x++)
             for (int y = 0; y < chunkSizeY; y++)
                 for (int z = 0; z < chunkSizeZ; z++)
-                    rWorld[x][y][z] = 0;
+                    rWorld[x][y][z] = world[x][y][z];
 
     }
 
     //chunk mesh generation!
     void genMesh() {
 
-        
+        chunkVertices.clear();
+
+        for (int x = 0; x < chunkSizeX; x++)
+            for (int y = 0; y < chunkSizeY; y++)
+                for (int z = 0; z < chunkSizeZ; z++)
+                    rWorld[x][y][z] = world[x][y][z];
+
         for (int x = 0; x < chunkSizeX; x++) {
             for (int y = 0; y < chunkSizeY; y++) {
                 for (int z = 0; z < chunkSizeZ; z++) {
@@ -193,7 +220,7 @@ public:
 
     void updateSize() {
         std::cout << chunkSize.x << std::endl;
-        chunkVertices.clear();
+        
         //genChunkWorld();
 
         genMesh();
@@ -205,11 +232,11 @@ private:
 
     Shader SHADER;
 
-    static const int chunkSizeX = 32;
+    static const int chunkSizeX = 48;
     static const int chunkSizeY = 128;
-    static const int chunkSizeZ = 32;
+    static const int chunkSizeZ = 48;
 
-    glm::vec3 chunkSize = glm::vec3(32.0f, 128.0f, 32.0f);
+    glm::vec3 chunkSize = glm::vec3(48.0f, 128.0f, 48.0f);
 
     unsigned int diffuseMapC, specularMapC;
     unsigned int chunkVAO, VBO;

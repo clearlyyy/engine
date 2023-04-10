@@ -154,7 +154,7 @@ int main()
     glm::vec3 cubePos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 cubeRot = glm::vec3(0.0f, 0.0f, 0.0f);
 
-    glm::vec3 chunkSize = glm::vec3(32.0f, 128.0f, 32.0f);
+    glm::vec3 chunkSize = glm::vec3(48.0f, 128.0f, 48.0f);
 
     bool wireframe = false;
 
@@ -193,8 +193,8 @@ int main()
         
         projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.01f, 1000.0f);
         view = camera.GetViewMatrix();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 1; j++) {
                 chunk.DrawChunk(glm::vec3((float)i*16, 0.0f, (float)j*16));
             }
         }

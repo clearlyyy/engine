@@ -96,52 +96,52 @@ public:
 	}
 
     //all the vertices for a cube, and offsets;
-    std::vector<float> getCube(float i, float j, float k) { 
+    std::vector<float> getCube(float i, float j, float k, float type) { 
         //std::cout << "getting cube" << std::endl;
         std::vector<float> verts;
 
         verts.insert(verts.end(), {
-            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-            i,        j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-            i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-            i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-            i - 1.0f, j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f, type,
+            i,        j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f, type,
+            i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f, type,
+            i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f, type,
+            i - 1.0f, j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f, type,
 
-            i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-            i,        j - 1.0f, k,         0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-            i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-            i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-            i - 1.0f, j       , k,         0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-            i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+            i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f, type,
+            i,        j - 1.0f, k,         0.0f,  0.0f,  1.0f,  1.0f,  0.0f, type,
+            i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f, type,
+            i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f, type,
+            i - 1.0f, j       , k,         0.0f,  0.0f,  1.0f,  0.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f, type,
 
-            i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-            i - 1.0f, j,        k - 1.0f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-            i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            i - 1.0f, j - 1.0f, k,        -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-            i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+            i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
+            i - 1.0f, j,        k - 1.0f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k,        -1.0f,  0.0f,  0.0f,  0.0f,  0.0f, type,
+            i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
 
-            i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-            i,        j,        k - 1.0f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-            i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            i,        j - 1.0f, k,         1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-            i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+            i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
+            i,        j,        k - 1.0f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f, type,
+            i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
+            i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
+            i,        j - 1.0f, k,         1.0f,  0.0f,  0.0f,  0.0f,  0.0f, type,
+            i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
 
-            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-            i,        j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-            i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-            i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-            i - 1.0f, j - 1.0f, k,         0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f, type,
+            i,        j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f, type,
+            i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f, type,
+            i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f, type,
+            i - 1.0f, j - 1.0f, k,         0.0f, -1.0f,  0.0f,  0.0f,  0.0f, type,
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f, type,
 
-            i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-            i,        j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-            i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-            i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-            i - 1.0f, j,        k,         0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-            i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+            i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f, type,
+            i,        j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f, type,
+            i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f, type,
+            i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f, type,
+            i - 1.0f, j,        k,         0.0f,  1.0f,  0.0f,  0.0f,  0.0f, type,
+            i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f, type
             });
 
         return verts;

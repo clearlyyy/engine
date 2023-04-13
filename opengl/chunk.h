@@ -47,20 +47,38 @@ public:
         //        }
 
         for (int x = 0; x < chunkSizeX; x++)
-            for (int y = 0; y < chunkSizeY - 40; y++)
+            for (int y = 0; y < 80; y++)
                 for (int z = 0; z < chunkSizeZ; z++) {
                     int rNoise;
-                    const double noise = perlin.octave2D((x * 0.01), (y * 0.01), 4);
-                    rNoise = (int)(noise * 70);
+                    const double noise = perlin.octave3D_01((x*0.01), (y * 0.01), (z * 0.01), 4);
+                    const double noise2 = perlin.octave2D_01((x * 0.01), (y * 0.01), 4);
+                    rNoise = (noise * 100);
+                    int rNoise2;
+                    rNoise2 = (noise2 * 100);
                     //std::cout << rNoise << std::endl;
-                    if (rNoise < 48 && rNoise > 1)
-                        world[x][y][rNoise] = 1;
+                    if (rNoise > 50)
+                        world[x][y][z] = 2;
+                    else
+                        world[x][y][z] = 1;
                     //std::cout << world[x][y][z] << '\t';
                 }
+
+        //for (int x = 0; x < chunkSizeX; x++)
+        //    for (int y = 80; y < chunkSizeY - 40; y++)
+        //        for (int z = 0; z < chunkSizeZ; z++) {
+        //            //int rNoise;
+        //            //const double noise = perlin.octave2D((x * 0.01), (y * 0.01), 4);
+        //            //rNoise = (int)(noise * 70);
+        //            //std::cout << rNoise << std::endl;
+        //            //if (rNoise < 48 && rNoise > 1)
+        //                world[x][y][z] = 1;
+        //            //std::cout << world[x][y][z] << '\t';
+        //        }
 
         
 
         //world[1][90][1] = 1;
+        world[1][90][1] = 2;
 
         for (int x = 0; x < chunkSizeX; x++)
             for (int y = 0; y < chunkSizeY; y++)
@@ -73,6 +91,7 @@ public:
     void genMesh() {
 
         chunkVertices.clear();
+        stoneVertices.clear();
 
         for (int x = 0; x < chunkSizeX; x++)
             for (int y = 0; y < chunkSizeY; y++)
@@ -82,41 +101,50 @@ public:
         for (int x = 0; x < chunkSizeX; x++) {
             for (int y = 0; y < chunkSizeY; y++) {
                 for (int z = 0; z < chunkSizeZ; z++) {
-                    if (world[x][y][z] == 1)
+                    if (world[x][y][z] != 0)
                         if (x == 0)
-                            rWorld[x][y][z] = 1;
+                            rWorld[x][y][z] = world[x][y][z];
                         else if (y == 0)
-                            rWorld[x][y][z] = 1;
+                            rWorld[x][y][z] = world[x][y][z];
                         else if (z == 0)
-                            rWorld[x][y][z] = 1;
+                            rWorld[x][y][z] = world[x][y][z];
                         else if (z == chunkSizeZ - 1)
-                            rWorld[x][y][z] = 1;
+                            rWorld[x][y][z] = world[x][y][z];
                         else if (x == chunkSizeX - 1)
-                            rWorld[x][y][z] = 1;
+                            rWorld[x][y][z] = world[x][y][z];
                         else if (y == chunkSizeY - 1)
-                            rWorld[x][y][z] = 1;
+                            rWorld[x][y][z] = world[x][y][z];
                         else
-                            if (world[x + 1][y][z] == 1 && world[x - 1][y][z] == 1
-                                && world[x][y + 1][z] == 1 && world[x][y - 1][z] == 1
-                                && world[x][y][z + 1] == 1 && world[x][y][z - 1] == 1) {
+                            if (world[x + 1][y][z] != 0 && world[x - 1][y][z] != 0
+                                && world[x][y + 1][z] != 0 && world[x][y - 1][z] != 0
+                                && world[x][y][z + 1] != 0 && world[x][y][z - 1] != 0) {
                                 rWorld[x][y][z] = 0;
                             }
                             else
-                                rWorld[x][y][z] = 1;
+                                rWorld[x][y][z] = world[x][y][z];
                 }
             }
         }
+
+
 
 
         for (float x = 0; x < chunkSize.x; x++) {
             for (float y = 0; y < chunkSize.y; y++) {
                 for (float z = 0; z < chunkSize.z; z++) {
                     if (rWorld[(int)x][(int)y][(int)z] == 1) {
-                        std::vector<float> verts = cu.getCube(x, y, z);
+                        std::vector<float> verts = cu.getCube(x, y, z, 1.0f);
                         chunkVertices.insert(chunkVertices.end(),
                             verts.begin(), verts.end()
                         );
                     }
+                    if (rWorld[(int)x][(int)y][(int)z] == 2) {
+                        std::vector<float> verts = cu.getCube(x, y, z, 2.0f);
+                        chunkVertices.insert(chunkVertices.end(),
+                            verts.begin(), verts.end()
+                        );
+                    }
+
                 }
             }
         }
@@ -126,14 +154,18 @@ public:
 
         UpdateShader(false, cubePos);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseMapC);
-        // bind specular map
-        //glActiveTexture(GL_TEXTURE1);
-        //glBindTexture(GL_TEXTURE_2D, specularMapC);
-        glBindVertexArray(chunkVAO);
-        glDrawArrays(GL_TRIANGLES, 0, (chunkVertices.size() / 8));
 
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, dirtTex);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, stoneTex);
+
+        glBindVertexArray(chunkVAO);
+
+        //dirt
+        glDrawArrays(GL_TRIANGLES, 0, chunkVertices.size()/9);
+        //glDrawArrays()
     }
 
     void initChunk() {
@@ -169,18 +201,26 @@ public:
         glBufferData(GL_ARRAY_BUFFER, chunkVertices.size() * sizeof(float), &chunkVertices.front(), GL_STATIC_DRAW);
 
         glBindVertexArray(chunkVAO);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        //position attribute
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
-
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        //normals attribute
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        //texture attribute
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
         glEnableVertexAttribArray(2);
+        //block type attribute
+        glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(8 * sizeof(float)));
+        glEnableVertexAttribArray(3);
 
         std::cout << "Finished Vertex Buffers" << std::endl;
 
-        diffuseMapC = loadTexture(cu.getDiffuse());
-        specularMapC = loadTexture(cu.getSpecular());
+        dirtTex = loadTexture(cu.getDiffuse());
+        stoneTex = loadTexture("textures/stone.png");
+
+        SHADER.use()
+
     }
 
 	void UpdateChunk() {
@@ -232,13 +272,16 @@ private:
 
     Shader SHADER;
 
+    int stoneStart;
+    int totalDirtV;
+
     static const int chunkSizeX = 48;
     static const int chunkSizeY = 128;
     static const int chunkSizeZ = 48;
 
     glm::vec3 chunkSize = glm::vec3(48.0f, 128.0f, 48.0f);
 
-    unsigned int diffuseMapC, specularMapC;
+    unsigned int dirtTex, stoneTex;
     unsigned int chunkVAO, VBO;
 
     uint8_t world[chunkSizeX][chunkSizeY][chunkSizeZ] = {};
@@ -247,6 +290,9 @@ private:
     std::vector<float> chunkVertices = {
         
     };
+    std::vector<float> stoneVertices = {
+
+    };
 
     Cube cu;
     glm::vec3 ChunkPos = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -254,8 +300,8 @@ private:
     void InitShader() {
         SHADER = Shader("shaders/cube.glsl", "shaders/light.glsl");
         SHADER.use();
-        //SHADER.setInt("material.diffuse", 0);
-        //SHADER.setInt("material.specular", 1);
+        SHADER.setInt("material.dirt", 0);
+        SHADER.setInt("material.stone", 1);
 
 
     }

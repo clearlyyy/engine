@@ -155,6 +155,8 @@ int main()
     glm::vec3 cubeRot = glm::vec3(0.0f, 0.0f, 0.0f);
 
     glm::vec3 chunkSize = glm::vec3(48.0f, 128.0f, 48.0f);
+    int chunkSeed = 1;
+    float Freq = 0.03f;
 
     bool wireframe = false;
 
@@ -173,6 +175,8 @@ int main()
     {
 
         glm::vec3 tempChunkSize = chunkSize;
+        int tempSeed = chunkSeed;
+        float tempFreq = Freq;
 
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
@@ -235,10 +239,26 @@ int main()
             chunk.genMesh();
             chunk.initChunk2();
         }
+        ImGui::SliderInt("Seed", &chunkSeed, 1, 200);
+
+        ImGui::SliderFloat("Freq", &Freq, 0.0, 1.0);
 
 
         if (tempChunkSize != chunkSize)
         {
+            chunk.setSize(chunkSize);
+            chunk.updateSize();
+        }
+
+        if (tempSeed != chunkSeed)
+        {
+            chunk.genChunkWorld(chunkSeed);
+            chunk.setSize(chunkSize);
+            chunk.updateSize();
+        }
+        if (tempFreq != Freq)
+        {
+            chunk.genChunkWorld(chunkSeed, Freq);
             chunk.setSize(chunkSize);
             chunk.updateSize();
         }

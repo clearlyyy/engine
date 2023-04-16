@@ -30,7 +30,7 @@ public:
     }
 
     //world generation
-    void genChunkWorld() {
+    void genChunkWorld(int wseed = 1, float frequency = 0.03) {
 
         for (int x = 0; x < chunkSizeX; x++)
             for (int y = 0; y < chunkSizeY; y++)
@@ -50,40 +50,38 @@ public:
         //            world[x][y][z] = 1;
         //            //std::cout << world[x][y][z] << '\t';
         //        }
+        perlinNoise.SetOctaveCount(6);
+        perlinNoise.SetFrequency(frequency);
+        perlinNoise.SetSeed(wseed);
 
-        for (int x = 0; x < chunkSizeX; x++)
-            for (int y = 0; y < 80; y++)
+        //stone
+        for (int x = 0; x < chunkSizeX; x++) {
+            for (int y = 0; y < 80; y++) {
                 for (int z = 0; z < chunkSizeZ; z++) {
-                    int rNoise;
-                    const double noise = perlin.octave3D_01((x*0.01), (y * 0.01), (z * 0.01), 4);
-                    const double noise2 = perlin.octave2D_01((x * 0.01), (y * 0.01), 4);
-                    rNoise = (noise * 100);
-                    int rNoise2;
-                    rNoise2 = (noise2 * 100);
-                    
-                    float ab = perlin.octave2D(x, y, 4);
-                    float bc = perlin.octave2D(y, z, 4);
-                    float ac = perlin.octave2D(x, z, 4);
-                    
-                    float ba = perlin.octave2D(y, x, 4);
-                    float cb = perlin.octave2D(z, y, 4);
-                    float ca = perlin.octave2D(z, x, 4);
-                    
-                    float abc = ab + bc + ac + ba + cb + ca;
-                    float dd = perlin.noise3D(x, y, z);
-
-                    float bruh = perlinNoise.GetValue(x * .9f, y * .9f, z * .9f);
-
-                    abc = abc * 15;
-
-                    if (abc < 0)
-                        abc = -abc;
-
-                    //std::cout << bruh << std::endl;
-                    if (bruh < 0)
+                    if (perlinNoise.GetValue(x * .9f, y * .9f, z * .9f) >= -.1f)
                         world[x][y][z] = 1;
-                    //std::cout << world[x][y][z] << '\t';
                 }
+            }
+        }
+
+        //dirt
+        for (int x = 0; x < chunkSizeX; x++) {
+            for (int y = 80; y < chunkSizeY - 40; y++) {
+                for (int z = 0; z < chunkSizeZ; z++) {
+                    if (perlinNoise.GetValue(x * .9f, y * .9f, z * .9f) >= -.1f)
+                        world[x][y][z] = 2;
+                }
+            }
+        }
+
+        //bedrock
+        for (int x = 0; x < chunkSizeX; x++) {
+            for (int y = 0; y < 1; y++) {
+                for (int z = 0; z < chunkSizeZ; z++) {
+                        world[x][y][z] = 3;
+                }
+            }
+        }
 
         //for (int x = 0; x < chunkSizeX; x++)
         //    for (int y = 80; y < chunkSizeY - 40; y++)
@@ -114,6 +112,9 @@ public:
 
         chunkVertices.clear();
         stoneVertices.clear();
+
+        //Textures
+                 
 
         for (int x = 0; x < chunkSizeX; x++)
             for (int y = 0; y < chunkSizeY; y++)
@@ -155,7 +156,19 @@ public:
             for (float y = 0; y < chunkSize.y; y++) {
                 for (float z = 0; z < chunkSize.z; z++) {
                     if (rWorld[(int)x][(int)y][(int)z] == 1) {
-                        std::vector<float> verts = cu.getCube(x, y, z, 1.0f);
+                        std::vector<float> verts = cu.getCube(x, y, z, 1.5f);
+                        chunkVertices.insert(chunkVertices.end(),
+                            verts.begin(), verts.end()
+                        );
+                    }
+                    if (rWorld[(int)x][(int)y][(int)z] == 2) {
+                        std::vector<float> verts = cu.getCube(x, y, z, 0.0f);
+                        chunkVertices.insert(chunkVertices.end(),
+                            verts.begin(), verts.end()
+                        );
+                    }
+                    if (rWorld[(int)x][(int)y][(int)z] == 3) {
+                        std::vector<float> verts = cu.getCube(x, y, z, 2.5f);
                         chunkVertices.insert(chunkVertices.end(),
                             verts.begin(), verts.end()
                         );
@@ -165,6 +178,9 @@ public:
                 }
             }
         }
+        
+
+
     }
 
     void DrawChunk(glm::vec3 cubePos = glm::vec3(0.0f, 0.0f, 0.0f)) {
@@ -172,11 +188,14 @@ public:
         UpdateShader(false, cubePos);
 
 
-        glActiveTexture(GL_TEXTURE1);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, dirtTex);
 
-        //glActiveTexture(GL_TEXTURE2);
-        //glBindTexture(GL_TEXTURE_2D, stoneTex);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, stoneTex);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, bedrockTex);
 
         glBindVertexArray(chunkVAO);
 
@@ -204,6 +223,8 @@ public:
     }
 
     void initChunk2() {
+
+        
 
         glDeleteVertexArrays(1, &chunkVAO);
         glDeleteBuffers(1, &VBO);
@@ -235,6 +256,11 @@ public:
 
         dirtTex = loadTexture(cu.getDiffuse());
         stoneTex = loadTexture("textures/stone.png");
+        bedrockTex = loadTexture("textures/bedrock.png");
+
+        int samplers[3] = { 0, 1, 2 };
+        SHADER.use();
+        SHADER.setSampler2D("u_Textures", samplers);
 
     }
 
@@ -296,7 +322,7 @@ private:
 
     glm::vec3 chunkSize = glm::vec3(48.0f, 128.0f, 48.0f);
 
-    unsigned int dirtTex, stoneTex;
+    unsigned int dirtTex, stoneTex, bedrockTex;
     unsigned int chunkVAO, VBO;
 
     uint8_t world[chunkSizeX][chunkSizeY][chunkSizeZ] = {};

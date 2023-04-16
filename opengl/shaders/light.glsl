@@ -59,6 +59,8 @@ uniform Material material;
 uniform vec3 viewPos;
 uniform samplerCube skybox;
 
+uniform sampler2D u_Textures[3];
+
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir); 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir); 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
@@ -69,8 +71,9 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
     // phase 1: directional lighting
-    vec3 ambient = vec3(1.2f, 1.2f, 1.2f);
-    vec3 result = ambient * vec3(texture(material.dirt, TexCoords));
+    vec3 ambient = vec3(1.0f, 1.0f, 1.0f);
+    int index = int(bType);
+    vec3 result = ambient * vec3(texture(u_Textures[index], TexCoords));
     
    
 

@@ -3,6 +3,8 @@
 #include "cube.h"
 #include "PerlinNoise.hpp"
 
+#include <noise/noise.h>
+
 
 
 class Chunk {
@@ -35,9 +37,12 @@ public:
                 for (int z = 0; z < chunkSizeZ; z++)
                     world[x][y][z] = 0;
 
-        const siv::PerlinNoise::seed_type seed = 5432532u;
+        const siv::PerlinNoise::seed_type seed = 12345;
 
         const siv::PerlinNoise perlin{ seed };
+
+        noise::module::Perlin perlinNoise;
+      
 
         //for (int x = 0; x < chunkSizeX; x++)
         //    for (int y = 0; y < chunkSizeY-40; y++)
@@ -55,10 +60,27 @@ public:
                     rNoise = (noise * 100);
                     int rNoise2;
                     rNoise2 = (noise2 * 100);
-                    //std::cout << rNoise << std::endl;
-                    if (rNoise > 50)
-                        world[x][y][z] = 2;
-                    else
+                    
+                    float ab = perlin.octave2D(x, y, 4);
+                    float bc = perlin.octave2D(y, z, 4);
+                    float ac = perlin.octave2D(x, z, 4);
+                    
+                    float ba = perlin.octave2D(y, x, 4);
+                    float cb = perlin.octave2D(z, y, 4);
+                    float ca = perlin.octave2D(z, x, 4);
+                    
+                    float abc = ab + bc + ac + ba + cb + ca;
+                    float dd = perlin.noise3D(x, y, z);
+
+                    float bruh = perlinNoise.GetValue(x * .9f, y * .9f, z * .9f);
+
+                    abc = abc * 15;
+
+                    if (abc < 0)
+                        abc = -abc;
+
+                    //std::cout << bruh << std::endl;
+                    if (bruh < 0)
                         world[x][y][z] = 1;
                     //std::cout << world[x][y][z] << '\t';
                 }
@@ -138,12 +160,7 @@ public:
                             verts.begin(), verts.end()
                         );
                     }
-                    if (rWorld[(int)x][(int)y][(int)z] == 2) {
-                        std::vector<float> verts = cu.getCube(x, y, z, 2.0f);
-                        chunkVertices.insert(chunkVertices.end(),
-                            verts.begin(), verts.end()
-                        );
-                    }
+                    
 
                 }
             }
@@ -158,8 +175,8 @@ public:
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, dirtTex);
 
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, stoneTex);
+        //glActiveTexture(GL_TEXTURE2);
+        //glBindTexture(GL_TEXTURE_2D, stoneTex);
 
         glBindVertexArray(chunkVAO);
 
@@ -218,8 +235,6 @@ public:
 
         dirtTex = loadTexture(cu.getDiffuse());
         stoneTex = loadTexture("textures/stone.png");
-
-        SHADER.use()
 
     }
 

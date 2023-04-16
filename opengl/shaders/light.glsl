@@ -3,7 +3,7 @@
 out vec4 FragColor;
 
 struct Material {
-  sampler2D dirt[3];
+  sampler2D dirt;
   sampler2D specular;
   float shininess;
 };

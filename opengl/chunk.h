@@ -14,6 +14,9 @@ public:
         cu = Cube("textures/dirt.jpg", "textures/dirt.jpg");
 
         //initChunk();
+
+        
+
         UpdateChunk();
 
         genChunkWorld();
@@ -30,7 +33,9 @@ public:
     }
 
     //world generation
-    void genChunkWorld(int wseed = 1, float frequency = 0.03) {
+    void genChunkWorld(int wseed = 1, float frequency = 0.03, float bias = -.1f) {
+
+        
 
         for (int x = 0; x < chunkSizeX; x++)
             for (int y = 0; y < chunkSizeY; y++)
@@ -50,7 +55,7 @@ public:
         //            world[x][y][z] = 1;
         //            //std::cout << world[x][y][z] << '\t';
         //        }
-        perlinNoise.SetOctaveCount(6);
+        perlinNoise.SetOctaveCount(4);
         perlinNoise.SetFrequency(frequency);
         perlinNoise.SetSeed(wseed);
 
@@ -58,7 +63,7 @@ public:
         for (int x = 0; x < chunkSizeX; x++) {
             for (int y = 0; y < 80; y++) {
                 for (int z = 0; z < chunkSizeZ; z++) {
-                    if (perlinNoise.GetValue(x * .9f, y * .9f, z * .9f) >= -.1f)
+                    if (perlinNoise.GetValue(x * .9f, y * .9f, z * .9f) >= bias)
                         world[x][y][z] = 2;
                 }
             }
@@ -68,7 +73,7 @@ public:
         for (int x = 0; x < chunkSizeX; x++) {
             for (int y = 80; y < chunkSizeY - 40; y++) {
                 for (int z = 0; z < chunkSizeZ; z++) {
-                    if (perlinNoise.GetValue(x * .9f, y * .9f, z * .9f) >= -.1f)
+                    if (perlinNoise.GetValue(x * .9f, y * .9f, z * .9f) >= bias)
                         world[x][y][z] = 3;
                 }
             }
@@ -188,13 +193,17 @@ public:
         
             }
         }
+        
     }
 
 
     void DrawChunk(glm::vec3 cubePos = glm::vec3(0.0f, 0.0f, 0.0f)) {
 
         UpdateShader(false, cubePos);
-
+        if (bootFlag) {
+            updateLight(glm::vec3(-0.2, -1.0, -0.3), glm::vec3(0.6, 0.6, 0.6), glm::vec3(0.300, 0.300, 0.300));
+            bootFlag = false;
+        }
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, dirtTex);
@@ -232,7 +241,7 @@ public:
 
     void initChunk2() {
 
-        
+        updateLight();
 
         glDeleteVertexArrays(1, &chunkVAO);
         glDeleteBuffers(1, &VBO);
@@ -269,11 +278,22 @@ public:
         int samplers[3] = { 0, 1, 2 };
         SHADER.use();
         SHADER.setSampler2D("u_Textures", samplers);
+        
+        
+        
 
     }
 
-	void UpdateChunk() {
+    void updateLight(glm::vec3 dir = glm::vec3(-0.2, -1.0, -0.3), glm::vec3 ambient = glm::vec3(0.2, 0.2, 0.2), glm::vec3 diffuse = glm::vec3(0.300, 0.300, 0.300)) {
+        SHADER.use();
+        //SHADER.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+        SHADER.setVec3("light.direction", dir);
+        SHADER.setVec3("light.ambient", ambient);
+        SHADER.setVec3("light.diffuse", diffuse);
+    }
 
+	void UpdateChunk() {
+        
         for (int x = 0; x < chunkSizeX; x++) {
             for (int y = 0; y < chunkSizeY; y++) {
                 for (int z = 0; z < chunkSizeZ; z++) {
@@ -330,6 +350,8 @@ private:
 
     int stoneStart;
     int totalDirtV;
+
+    bool bootFlag = true;
 
     static const int chunkSizeX = 48;
     static const int chunkSizeY = 128;

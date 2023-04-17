@@ -173,8 +173,14 @@ int main()
 
     float frameRate;
     double timer = 1.0f;
-
+    glm::vec3 lightDirection = glm::vec3(-0.2f, -1.0f, -0.3f);
+    glm::vec3 ambient = glm::vec3(0.2f, 0.2f, 0.2f);
+    glm::vec3 diffuse = glm::vec3(0.3f, 0.3f, 0.3f);
     std::string frameRateStr;
+
+    float bias = -.1f;
+
+    //chunk.updateLight(lightDirection, ambient, diffuse);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -182,6 +188,10 @@ int main()
         glm::vec3 tempChunkSize = chunkSize;
         int tempSeed = chunkSeed;
         float tempFreq = Freq;
+        float tempbias = bias;
+        glm::vec3 templightDirection = lightDirection;
+        glm::vec3 tempAmbient = ambient;
+        glm::vec3 tempDiffuse = diffuse;
 
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
@@ -238,29 +248,32 @@ int main()
         const char* camStr = "camera.Position: ";
         
 
-        ImGui::Begin("Debug Menu");
-        ImGui::Text("Welcome to ling");
+        ImGui::Begin("SHITCRAFT_DEBUG");
+        ImGui::Text("SHITCRAFT_DEBUG_MENU");
+        ImGui::Text("FPS: ");
+        ImGui::SameLine();
         ImGui::Text(frameRateStr.c_str());
         ImGui::Checkbox("Wireframe?", &wireframe);
         ImGui::Text("camera.Position");
         ImGui::SameLine();
         ImGui::Text(glm::to_string(camera.Position).c_str());
-        ImGui::SliderFloat3("Backpack Position", &backpackPos.x, -3.0f, 3.0f);
-        ImGui::SliderFloat3("Backpack Rotation", &backpackRot.x, -90.0f, 90.0f);
-
-        ImGui::SliderFloat3("Cube Position", &cubePos.x, -3.0f, 3.0f);
-        
+        ImGui::Text("CHUNK_PROPERTIES");
         ImGui::SliderFloat3("Chunk Size", &chunkSize.x, 1.0f, chunkSize2.x);
+        ImGui::Text("BLOCK_PROPERTIES");
         ImGui::InputInt4("addBlock", selectedBlock);
         if (ImGui::Button("Add")) {
             chunk.addBlock(selectedBlock[0], selectedBlock[1], selectedBlock[2], selectedBlock[3]);
             chunk.genMesh();
             chunk.initChunk2();
         }
+        ImGui::Text("PERLIN_NOISE_PROPERTIES");
         ImGui::SliderInt("Seed", &chunkSeed, 1, 200);
-
         ImGui::SliderFloat("Freq", &Freq, 0.0, 1.0);
-
+        ImGui::SliderFloat("Bias", &bias, -1.0, 1.0);
+        ImGui::Text("LIGHTING_PROPERTIES");
+        ImGui::SliderFloat3("LightDir", &lightDirection.x, -1.0f, 1.0f);
+        ImGui::SliderFloat("Diffuse", &diffuse.x, -1.0f, 1.0f);
+        ImGui::SliderFloat("Ambient", &ambient.x,  0.0f, 1.0f);
 
         if (tempChunkSize != chunkSize)
         {
@@ -270,17 +283,34 @@ int main()
 
         if (tempSeed != chunkSeed)
         {
-            chunk.genChunkWorld(chunkSeed);
+            chunk.genChunkWorld(chunkSeed, Freq, bias);
+            chunk.setSize(chunkSize);
+            chunk.updateSize();
+        }
+        if (tempbias != bias)
+        {
+            chunk.genChunkWorld(chunkSeed, Freq, bias);
             chunk.setSize(chunkSize);
             chunk.updateSize();
         }
         if (tempFreq != Freq)
         {
-            chunk.genChunkWorld(chunkSeed, Freq);
+            chunk.genChunkWorld(chunkSeed, Freq, bias);
             chunk.setSize(chunkSize);
             chunk.updateSize();
         }
-
+        if (templightDirection != lightDirection)
+        {
+            chunk.updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
+        }
+        if (tempAmbient != ambient)
+        {
+            chunk.updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
+        }
+        if (tempDiffuse != diffuse)
+        {
+            chunk.updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
+        }
         ImGui::End();
 
         ImGui::Render();

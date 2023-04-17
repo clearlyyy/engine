@@ -26,7 +26,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int loadTexture(const char* path);
 unsigned int loadCubemap(vector<std::string> faces);
 // settings
-const unsigned int SCR_WIDTH = 1280;
+const unsigned int SCR_WIDTH = 1500;
 const unsigned int SCR_HEIGHT = 720;
 
 float deltaTime = 0.0f;
@@ -173,11 +173,17 @@ int main()
 
     float frameRate;
     double timer = 1.0f;
-    glm::vec3 lightDirection = glm::vec3(-0.2f, -1.0f, -0.3f);
-    glm::vec3 ambient = glm::vec3(0.2f, 0.2f, 0.2f);
-    glm::vec3 diffuse = glm::vec3(0.3f, 0.3f, 0.3f);
+    glm::vec3 lightDirection = glm::vec3(-0.2f, -1.0f, 0.208f);
+    glm::vec3 ambient = glm::vec3(0.7f, 0.7f, 0.7f);
+    glm::vec3 diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
     std::string frameRateStr;
 
+    bool cinemaMode = false;
+    glm::vec3 tempPosition = glm::vec3(-169.496063, 321.925934, -168.110580);
+    float tempZoom = 18.0f;
+    glm::vec3 tempFront = glm::vec3(0.500839, -0.710798, 0.493890);
+    float tempPitch = -45.299854;
+    float tempYaw = -43;
     float bias = -.1f;
 
     //chunk.updateLight(lightDirection, ambient, diffuse);
@@ -192,6 +198,7 @@ int main()
         glm::vec3 templightDirection = lightDirection;
         glm::vec3 tempAmbient = ambient;
         glm::vec3 tempDiffuse = diffuse;
+        bool tempCinemaMode = cinemaMode;
 
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
@@ -254,9 +261,17 @@ int main()
         ImGui::SameLine();
         ImGui::Text(frameRateStr.c_str());
         ImGui::Checkbox("Wireframe?", &wireframe);
+        ImGui::SameLine();
+        ImGui::Checkbox("Cinematic Mode", &cinemaMode);
+        ImGui::Text("------------------------------------");
         ImGui::Text("camera.Position");
         ImGui::SameLine();
         ImGui::Text(glm::to_string(camera.Position).c_str());
+        ImGui::Text(std::to_string(camera.Zoom).c_str());
+        ImGui::Text(glm::to_string(camera.Front).c_str());
+        ImGui::Text(std::to_string(camera.Pitch).c_str());
+        ImGui::Text(std::to_string(camera.Yaw).c_str());
+        ImGui::Text("------------------------------------");
         ImGui::Text("CHUNK_PROPERTIES");
         ImGui::SliderFloat3("Chunk Size", &chunkSize.x, 1.0f, chunkSize2.x);
         ImGui::Text("BLOCK_PROPERTIES");
@@ -310,6 +325,26 @@ int main()
         if (tempDiffuse != diffuse)
         {
             chunk.updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
+        }
+        if (tempCinemaMode != cinemaMode) {
+            if (cinemaMode) {
+                tempPosition = camera.Position;
+                tempZoom = camera.Zoom;
+                
+                tempPitch = camera.Pitch;
+                tempYaw = camera.Yaw;
+                camera.Position = glm::vec3(-169.496063, 321.925934, -168.110580);
+                camera.Zoom = 18.0f;
+                camera.Front = glm::vec3(0.500839, -0.710798, 0.493890);
+                camera.Pitch = -45.299854;
+                camera.Yaw = -763;
+            }
+            else {      
+                camera.Zoom = tempZoom;
+                camera.Position = tempPosition;
+                camera.Yaw = tempYaw;
+                camera.Pitch = tempPitch;
+            }
         }
         ImGui::End();
 

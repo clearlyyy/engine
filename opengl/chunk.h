@@ -200,10 +200,10 @@ public:
     void DrawChunk(glm::vec3 cubePos = glm::vec3(0.0f, 0.0f, 0.0f)) {
 
         UpdateShader(false, cubePos);
-        if (bootFlag) {
-            updateLight(glm::vec3(-0.2, -1.0, -0.3), glm::vec3(0.6, 0.6, 0.6), glm::vec3(0.300, 0.300, 0.300));
-            bootFlag = false;
-        }
+        //if (bootFlag) {
+        //    updateLight(glm::vec3(-0.2, -1.0, -0.3), glm::vec3(0.6, 0.6, 0.6), glm::vec3(0.300, 0.300, 0.300));
+        //    bootFlag = false;
+        //}
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, dirtTex);
@@ -448,6 +448,7 @@ private:
         SHADER.use();
         SHADER.setInt("material.dirt", 0);
         SHADER.setInt("material.stone", 1);
+        updateLight(glm::vec3(-0.2f, -1.0f, 0.208f), glm::vec3(0.7f, 0.7f, 0.7f), glm::vec3(0.8f, 0.8f, 0.8f));
 
 
     }

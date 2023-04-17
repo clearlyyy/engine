@@ -96,10 +96,9 @@ public:
 	}
 
     //all the vertices for a cube, and offsets;
-    std::vector<float> getCube(float i, float j, float k, float type) { 
-        //std::cout << "getting cube" << std::endl;
-        std::vector<float> verts;
 
+    std::vector<float> getNorth(float i, float j, float k, float type) {
+        std::vector<float> verts;
         verts.insert(verts.end(), {
             i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f, type,
             i,        j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f, type,
@@ -107,7 +106,87 @@ public:
             i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f, type,
             i - 1.0f, j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f, type,
             i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f, type,
+        });
+        return verts;
+    }
+    std::vector<float> getSouth(float i, float j, float k, float type) {
+        std::vector<float> verts;
+        verts.insert(verts.end(), {
+            i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f, type,
+            i,        j - 1.0f, k,         0.0f,  0.0f,  1.0f,  1.0f,  0.0f, type,
+            i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f, type,
+            i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f, type,
+            i - 1.0f, j       , k,         0.0f,  0.0f,  1.0f,  0.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f, type,
+            });
+        return verts;
+    }
+    std::vector<float> getWest(float i, float j, float k, float type) {
+        std::vector<float> verts;
+        verts.insert(verts.end(), {
+            i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
+            i - 1.0f, j,        k - 1.0f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k,        -1.0f,  0.0f,  0.0f,  0.0f,  0.0f, type,
+            i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
+            });
+        return verts;
+    }
+    std::vector<float> getEast(float i, float j, float k, float type) {
+        std::vector<float> verts;
+        verts.insert(verts.end(), {
+            i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
+            i,        j,        k - 1.0f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f, type,
+            i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
+            i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
+            i,        j - 1.0f, k,         1.0f,  0.0f,  0.0f,  0.0f,  0.0f, type,
+            i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
+            });
+        return verts;
+    }
+    std::vector<float> getBottom(float i, float j, float k, float type) {
+        std::vector<float> verts;
+        verts.insert(verts.end(), {
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f, type,
+            i,        j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f, type,
+            i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f, type,
+            i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f, type,
+            i - 1.0f, j - 1.0f, k,         0.0f, -1.0f,  0.0f,  0.0f,  0.0f, type,
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f, type,
+            });
+        return verts;
+    }
+    std::vector<float> getTop(float i, float j, float k, float type) {
+        std::vector<float> verts;
+        verts.insert(verts.end(), {
+            i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f, type,
+            i,        j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f, type,
+            i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f, type,
+            i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f, type,
+            i - 1.0f, j,        k,         0.0f,  1.0f,  0.0f,  0.0f,  0.0f, type,
+            i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f, type
+            });
 
+        return verts;
+    }
+
+    //Deprecated.
+    std::vector<float> getCube(float i, float j, float k, float type) { 
+        //std::cout << "getting cube" << std::endl;
+        std::vector<float> verts;
+
+        verts.insert(verts.end(), {
+
+            //north face
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f, type,
+            i,        j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f, type,
+            i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f, type,
+            i,        j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f, type,
+            i - 1.0f, j       , k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f, type,
+            i - 1.0f, j - 1.0f, k - 1.0f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f, type,
+            
+            //south face
             i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f, type,
             i,        j - 1.0f, k,         0.0f,  0.0f,  1.0f,  1.0f,  0.0f, type,
             i,        j       , k,         0.0f,  0.0f,  1.0f,  1.0f,  1.0f, type,
@@ -115,27 +194,28 @@ public:
             i - 1.0f, j       , k,         0.0f,  0.0f,  1.0f,  0.0f,  1.0f, type,
             i - 1.0f, j - 1.0f, k,         0.0f,  0.0f,  1.0f,  0.0f,  0.0f, type,
 
+            //west face
             i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
             i - 1.0f, j,        k - 1.0f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f, type,
             i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
             i - 1.0f, j - 1.0f, k - 1.0f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
             i - 1.0f, j - 1.0f, k,        -1.0f,  0.0f,  0.0f,  0.0f,  0.0f, type,
             i - 1.0f, j,        k,        -1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
-
+            //east face
             i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
             i,        j,        k - 1.0f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f, type,
             i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
             i,        j - 1.0f, k - 1.0f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f, type,
             i,        j - 1.0f, k,         1.0f,  0.0f,  0.0f,  0.0f,  0.0f, type,
             i,        j,        k,         1.0f,  0.0f,  0.0f,  1.0f,  0.0f, type,
-
+            //bottom face
             i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f, type,
             i,        j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f, type,
             i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f, type,
             i,        j - 1.0f, k,         0.0f, -1.0f,  0.0f,  1.0f,  0.0f, type,
             i - 1.0f, j - 1.0f, k,         0.0f, -1.0f,  0.0f,  0.0f,  0.0f, type,
             i - 1.0f, j - 1.0f, k - 1.0f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f, type,
-
+            //top face
             i - 1.0f, j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f, type,
             i,        j,        k - 1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f, type,
             i,        j,        k,         0.0f,  1.0f,  0.0f,  1.0f,  0.0f, type,

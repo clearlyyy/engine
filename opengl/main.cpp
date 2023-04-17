@@ -171,6 +171,11 @@ int main()
 
     int selectedBlock[4] = {0,0,0,0};
 
+    float frameRate;
+    double timer = 1.0f;
+
+    std::string frameRateStr;
+
     while (!glfwWindowShouldClose(window))
     {
 
@@ -181,6 +186,16 @@ int main()
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        frameRate = 1.0f / deltaTime;
+
+        //std::cout << frameRate << "\n;
+        timer += timer * deltaTime;
+        if (timer > 1.5) {
+            frameRateStr = std::to_string(frameRate);
+            timer = 1.0;
+        }
+
         processInput(window);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -221,8 +236,11 @@ int main()
         glDepthFunc(GL_LESS);
 
         const char* camStr = "camera.Position: ";
+        
+
         ImGui::Begin("Debug Menu");
         ImGui::Text("Welcome to ling");
+        ImGui::Text(frameRateStr.c_str());
         ImGui::Checkbox("Wireframe?", &wireframe);
         ImGui::Text("camera.Position");
         ImGui::SameLine();

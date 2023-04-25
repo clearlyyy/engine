@@ -15,6 +15,8 @@ public:
 
         //initChunk();
 
+
+
         
 
         UpdateChunk();
@@ -22,6 +24,10 @@ public:
         genChunkWorld();
 
         genMesh();
+
+        
+        
+       
     }
 
     glm::vec3 getChunkSize() {
@@ -63,7 +69,7 @@ public:
         for (int x = 0; x < chunkSizeX; x++) {
             for (int y = 0; y < 80; y++) {
                 for (int z = 0; z < chunkSizeZ; z++) {
-                    if (perlinNoise.GetValue(x * .9f, y * .9f, z * .9f) >= bias)
+                    if (perlinNoise.GetValue((x+ChunkPos.x) * .9f, y * .9f, (z + ChunkPos.z) * .9f) >= bias)
                         world[x][y][z] = 2;
                 }
             }
@@ -73,7 +79,7 @@ public:
         for (int x = 0; x < chunkSizeX; x++) {
             for (int y = 80; y < chunkSizeY - 40; y++) {
                 for (int z = 0; z < chunkSizeZ; z++) {
-                    if (perlinNoise.GetValue(x * .9f, y * .9f, z * .9f) >= bias)
+                    if (perlinNoise.GetValue((x + ChunkPos.x) * .9f, y * .9f, (z + ChunkPos.z) * .9f) >= bias)
                         world[x][y][z] = 3;
                 }
             }
@@ -163,7 +169,7 @@ public:
         for (float x = 0; x < chunkSize.x; x++) {
             for (float y = 0; y < chunkSize.y; y++) {
                 for (float z = 0; z < chunkSize.z; z++) {
-                    
+                    //std::cout << ChunkPos.x << std::endl;
                     //if ((int)x == 0 && rWorld[(int)x][(int)y][(int)z] != 1)
                     //if ((int)z == 0)
                     //std::cout << world[0][0][-1] << std::endl;
@@ -378,69 +384,70 @@ private:
     void OptimizeChunk(float x, float y, float z, uint8_t world[chunkSizeX][chunkSizeY][chunkSizeZ], float blockTex, int blockID) {
         if ((int)x == 0 && world[(int)x][(int)y][(int)z] == blockID)
         {
-            std::vector<float> verts = cu.getWest(x, y, z, blockTex);
+            std::vector<float> verts = cu.getWest(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
             chunkVertices.insert(chunkVertices.end(),
                 verts.begin(), verts.end()
             );
         }
         if ((int)z == 0 && world[(int)x][(int)y][(int)z] == blockID)
         {
-            std::vector<float> verts = cu.getNorth(x, y, z, blockTex);
+            std::vector<float> verts = cu.getNorth(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
             chunkVertices.insert(chunkVertices.end(),
                 verts.begin(), verts.end()
             );
         }
         if ((int)x == chunkSize.x - 1 && world[(int)x][(int)y][(int)z] == blockID)
         {
-            std::vector<float> verts = cu.getEast(x, y, z, blockTex);
+            std::vector<float> verts = cu.getEast(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
             chunkVertices.insert(chunkVertices.end(),
                 verts.begin(), verts.end()
             );
         }
         if ((int)z == chunkSize.z - 1 && world[(int)x][(int)y][(int)z] == blockID)
         {
-            std::vector<float> verts = cu.getSouth(x, y, z, blockTex);
+            std::vector<float> verts = cu.getSouth(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
             chunkVertices.insert(chunkVertices.end(),
                 verts.begin(), verts.end()
             );
         }
-
-        if (world[(int)x][(int)y][(int)z - 1] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
-            std::vector<float> verts = cu.getNorth(x, y, z, blockTex);
-            chunkVertices.insert(chunkVertices.end(),
-                verts.begin(), verts.end()
-            );
-        }
-        if (world[(int)x][(int)y][(int)z + 1] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
-            std::vector<float> verts = cu.getSouth(x, y, z, blockTex);
-            chunkVertices.insert(chunkVertices.end(),
-                verts.begin(), verts.end()
-            );
-        }
-        if (world[(int)x - 1][(int)y][(int)z] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
-            std::vector<float> verts = cu.getWest(x, y, z, blockTex);
-            chunkVertices.insert(chunkVertices.end(),
-                verts.begin(), verts.end()
-            );
-        }
-        if (world[(int)x + 1][(int)y][(int)z] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
-            std::vector<float> verts = cu.getEast(x, y, z, blockTex);
-            chunkVertices.insert(chunkVertices.end(),
-                verts.begin(), verts.end()
-            );
-        }
-        if (world[(int)x][(int)y + 1][(int)z] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
-            std::vector<float> verts = cu.getTop(x, y, z, blockTex);
-            chunkVertices.insert(chunkVertices.end(),
-                verts.begin(), verts.end()
-            );
-        }
-        if (world[(int)x][(int)y - 1][(int)z] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
-            std::vector<float> verts = cu.getBottom(x, y, z, blockTex);
-            chunkVertices.insert(chunkVertices.end(),
-                verts.begin(), verts.end()
-            );
-        }
+        
+            if (world[(int)x][(int)y][(int)z - 1] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
+                std::vector<float> verts = cu.getNorth(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
+                chunkVertices.insert(chunkVertices.end(),
+                    verts.begin(), verts.end()
+                );
+            }
+            if (world[(int)x][(int)y][(int)z + 1] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
+                std::vector<float> verts = cu.getSouth(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
+                chunkVertices.insert(chunkVertices.end(),
+                    verts.begin(), verts.end()
+                );
+            }
+            if (world[(int)x - 1][(int)y][(int)z] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
+                std::vector<float> verts = cu.getWest(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
+                chunkVertices.insert(chunkVertices.end(),
+                    verts.begin(), verts.end()
+                );
+            }
+            if (world[(int)x + 1][(int)y][(int)z] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
+                std::vector<float> verts = cu.getEast(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
+                chunkVertices.insert(chunkVertices.end(),
+                    verts.begin(), verts.end()
+                );
+            }
+            if (world[(int)x][(int)y + 1][(int)z] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
+                std::vector<float> verts = cu.getTop(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
+                chunkVertices.insert(chunkVertices.end(),
+                    verts.begin(), verts.end()
+                );
+            }
+            if (world[(int)x][(int)y - 1][(int)z] == 1 && world[(int)x][(int)y][(int)z] == blockID) {
+                std::vector<float> verts = cu.getBottom(x + ChunkPos.x, y, z + ChunkPos.z, blockTex);
+                chunkVertices.insert(chunkVertices.end(),
+                    verts.begin(), verts.end()
+                );
+            }
+        
     }
 
     void InitShader() {
@@ -463,7 +470,7 @@ private:
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-        model = glm::translate(model, ChunkPos);
+        //model = glm::translate(model, ChunkPos);
         SHADER.setMat4("model", model);
 
     }

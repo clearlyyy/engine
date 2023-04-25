@@ -18,6 +18,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -163,27 +164,46 @@ int main()
 
     //Cube tCube(cubePos, "textures/dirt.jpg", "textures/dirt.jpg");
 
-    Chunk* chunk = new Chunk(glm::vec3(0.0f, 0.0f, 0.0f));
-    Chunk* newChunk = new Chunk(glm::vec3(48.0f, 0.0f, 0.0f));
-    Chunk* newChunk2 = new Chunk(glm::vec3(0.0f, 0.0f, 48.0f));
-    Chunk* newChunk3 = new Chunk(glm::vec3(48.0f, 0.0f, 48.0f));
+    //Chunk* chunk = new Chunk(glm::vec3(0.0f, 0.0f, 0.0f));
+    //Chunk* newChunk = new Chunk(glm::vec3(48.0f, 0.0f, 0.0f));
+    //Chunk* newChunk2 = new Chunk(glm::vec3(0.0f, 0.0f, 48.0f));
+    //Chunk* newChunk3 = new Chunk(glm::vec3(48.0f, 0.0f, 48.0f));
+
+    std::vector<Chunk> world;
+
+    int renderDistance = 10;
+
+    for (int i = -renderDistance; i < renderDistance; i++) {
+        for (int j = -renderDistance; j < renderDistance; j++) {
+            world.push_back(Chunk(glm::vec3(i*48, 0.0f, j*48)));
+        }
+    }
     
     //glEnable(GL_CULL_FACE);
     //glCullFace(GL_BACK);
 
-    glm::vec3 chunkSize2 = chunk->getChunkSize();
+    //glm::vec3 chunkSize2 = chunk->getChunkSize();
 
-
-    chunk->initChunk2();
     
- 
-    newChunk->initChunk2();
 
-   
-    newChunk2->initChunk2();
+    for (int i = 0; i < world.size(); i++)
+        world[i].initChunk2();
 
 
-    newChunk3->initChunk2();
+        
+
+    
+
+   //chunk->initChunk2();
+   //
+   //
+   //newChunk->initChunk2();
+   //
+   //
+   //newChunk2->initChunk2();
+   //
+   //
+   //newChunk3->initChunk2();
 
 
     int selectedBlock[4] = {0,0,0,0};
@@ -247,10 +267,13 @@ int main()
         projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.01f, 1000.0f);
         view = camera.GetViewMatrix();
         
-        newChunk->DrawChunk(glm::vec3(48.0f, 0, 0));
-        newChunk2->DrawChunk(glm::vec3(48.0f, 0, 0));
-        newChunk3->DrawChunk(glm::vec3(48.0f, 0, 0));
-        chunk->DrawChunk(glm::vec3(48.0f,0,0));
+        //newChunk->DrawChunk(glm::vec3(48.0f, 0, 0));
+        //newChunk2->DrawChunk(glm::vec3(48.0f, 0, 0));
+        //newChunk3->DrawChunk(glm::vec3(48.0f, 0, 0));
+        //chunk->DrawChunk(glm::vec3(48.0f,0,0));
+
+        for (int i = 0; i < world.size(); i++)
+            world[i].DrawChunk();
         
 
         
@@ -291,13 +314,13 @@ int main()
         ImGui::Text(std::to_string(camera.Yaw).c_str());
         ImGui::Text("------------------------------------");
         ImGui::Text("CHUNK_PROPERTIES");
-        ImGui::SliderFloat3("Chunk Size", &chunkSize.x, 1.0f, chunkSize2.x);
+        //ImGui::SliderFloat3("Chunk Size", &chunkSize.x, 1.0f, chunkSize2.x);
         ImGui::Text("BLOCK_PROPERTIES");
         ImGui::InputInt4("addBlock", selectedBlock);
         if (ImGui::Button("Add")) {
-           chunk->addBlock(selectedBlock[0], selectedBlock[1], selectedBlock[2], selectedBlock[3]);
-           chunk->genMesh();
-           chunk->initChunk2();
+          // chunk->addBlock(selectedBlock[0], selectedBlock[1], selectedBlock[2], selectedBlock[3]);
+           //chunk->genMesh();
+           //chunk->initChunk2();
         }
         ImGui::Text("PERLIN_NOISE_PROPERTIES");
         ImGui::SliderInt("Seed", &chunkSeed, 1, 200);
@@ -310,39 +333,39 @@ int main()
 
         if (tempChunkSize != chunkSize)
         {
-            chunk->setSize(chunkSize);
-            chunk->updateSize();
+            //chunk->setSize(chunkSize);
+            //chunk->updateSize();
         }
 
         if (tempSeed != chunkSeed)
         {
-            chunk->genChunkWorld(chunkSeed, Freq, bias);
-            chunk->setSize(chunkSize);
-            chunk->updateSize();
+            //chunk->genChunkWorld(chunkSeed, Freq, bias);
+            //chunk->setSize(chunkSize);
+            //chunk->updateSize();
         }
         if (tempbias != bias)
         {
-            chunk->genChunkWorld(chunkSeed, Freq, bias);
-            chunk->setSize(chunkSize);
-            chunk->updateSize();
+            //chunk->genChunkWorld(chunkSeed, Freq, bias);
+            //chunk->setSize(chunkSize);
+            //chunk->updateSize();
         }
         if (tempFreq != Freq)
         {
-            chunk->genChunkWorld(chunkSeed, Freq, bias);
-            chunk->setSize(chunkSize);
-            chunk->updateSize();
+            //chunk->genChunkWorld(chunkSeed, Freq, bias);
+            //chunk->setSize(chunkSize);
+            //chunk->updateSize();
         }
         if (templightDirection != lightDirection)
         {
-            chunk->updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
+            //chunk->updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
         }
         if (tempAmbient != ambient)
         {
-            chunk->updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
+            //chunk->updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
         }
         if (tempDiffuse != diffuse)
         {
-            chunk->updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
+            //chunk->updateLight(lightDirection, glm::vec3(ambient.x, ambient.x, ambient.x), glm::vec3(diffuse.x, diffuse.x, diffuse.x));
         }
         if (tempCinemaMode != cinemaMode) {
             if (cinemaMode) {
